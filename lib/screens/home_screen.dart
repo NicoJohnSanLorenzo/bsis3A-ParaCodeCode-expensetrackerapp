@@ -24,7 +24,7 @@ class HomeScreen extends StatelessWidget {
         actions: [
           // ── Currency picker (shared_preferences demo) ────────────────────
           Consumer<ExpensesProvider>(
-            builder: (_, provider, __) => PopupMenuButton<String>(
+            builder: (_, provider, _) => PopupMenuButton<String>(
               icon: const Icon(Icons.currency_exchange, color: Colors.white),
               tooltip: 'Change currency',
               onSelected: provider.setCurrency,
@@ -37,7 +37,7 @@ class HomeScreen extends StatelessWidget {
           ),
           // ── Manual sync button ───────────────────────────────────────────
           Consumer<ExpensesProvider>(
-            builder: (_, provider, __) => IconButton(
+            builder: (_, provider, _) => IconButton(
               icon: const Icon(Icons.sync, color: Colors.white),
               tooltip: 'Sync from API',
               onPressed: provider.isLoading ? null : provider.syncFromApi,
@@ -48,6 +48,8 @@ class HomeScreen extends StatelessWidget {
 
       body: Consumer<ExpensesProvider>(
         builder: (context, provider, child) {
+          final total = provider.expenses.fold<double>(
+              0, (sum, expense) => sum + expense.amount);
           return Column(
             children: [
               // ── Error / offline banner ───────────────────────────────────
@@ -81,6 +83,61 @@ class HomeScreen extends StatelessWidget {
                   color: Color.fromARGB(211, 41, 175, 50),
                 ),
 
+              // ── Total Expenses Card ──────────────────────────────────────
+              Container(
+                width: double.infinity,
+                margin: const EdgeInsets.all(12),
+                padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 24),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [
+                      Color.fromARGB(211, 41, 175, 50),
+                      Color.fromARGB(255, 30, 130, 38),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.black26,
+                      blurRadius: 8,
+                      offset: Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Total Expenses',
+                      style: TextStyle(
+                        color: Colors.white70,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      '${provider.currency}${total.toStringAsFixed(2)}',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      '${provider.expenses.length} expense${provider.expenses.length == 1 ? '' : 's'}',
+                      style: const TextStyle(
+                        color: Colors.white60,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              
               // ── Expense list (sqflite-backed) ────────────────────────────
               Expanded(
                 child: provider.expenses.isEmpty && !provider.isLoading

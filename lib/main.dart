@@ -28,6 +28,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Expense Tracker',
       home: const HomeScreen(),
+      debugShowCheckedModeBanner: false
     );
   }
 }
