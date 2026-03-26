@@ -32,6 +32,8 @@ class HomeScreen extends StatelessWidget {
                 PopupMenuItem(value: '₱', child: Text('₱ PHP')),
                 PopupMenuItem(value: '\$', child: Text('\$ USD')),
                 PopupMenuItem(value: '€', child: Text('€ EUR')),
+                PopupMenuItem(value: '¥', child: Text('¥ JPY')),
+                PopupMenuItem(value: '₩', child: Text('₩ KRW')),
               ],
             ),
           ),
