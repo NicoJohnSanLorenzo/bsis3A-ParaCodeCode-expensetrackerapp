@@ -3,6 +3,25 @@ import 'package:provider/provider.dart';
 import '../providers/expenses_provider.dart';
 import 'add_expense_screen.dart';
 
+/// A [PageRoute] that fades the incoming screen in over [duration].
+class FadeRoute<T> extends PageRouteBuilder<T> {
+  final Widget page;
+  final Duration duration;
+
+  FadeRoute({
+    required this.page,
+    this.duration = const Duration(milliseconds: 300),
+  }) : super(
+          pageBuilder: (_, __, ___) => page,
+          transitionDuration: duration,
+          reverseTransitionDuration: duration,
+          transitionsBuilder: (_, animation, __, child) => FadeTransition(
+            opacity: animation,
+            child: child,
+          ),
+        );
+      }
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -184,9 +203,8 @@ class HomeScreen extends StatelessWidget {
                                         color: Colors.blue),
                                     onPressed: () => Navigator.push(
                                       context,
-                                      MaterialPageRoute(
-                                        builder: (_) => AddExpenseScreen(
-                                            expense: expense),
+                                      FadeRoute(
+                                        page: AddExpenseScreen(expense: expense),
                                       ),
                                     ),
                                   ),
@@ -213,7 +231,7 @@ class HomeScreen extends StatelessWidget {
         child: const Icon(Icons.add),
         onPressed: () => Navigator.push(
           context,
-          MaterialPageRoute(builder: (_) => AddExpenseScreen()),
+          FadeRoute(page: AddExpenseScreen()),
         ),
       ),
     );
