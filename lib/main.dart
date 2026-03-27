@@ -35,12 +35,25 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Expense Tracker',
+<<<<<<< main
       theme: ExpenseTrackerTheme.themeData,  // ✅ Professional theming
       darkTheme: ExpenseTrackerTheme.darkThemeData,  // ✅ Dark mode support
       themeMode: ThemeMode.system,  // ✅ Follows device theme
       home: const SplashScreen(),  // ✅ SPLASH SCREEN!
       debugShowCheckedModeBanner: false,
       builder: (context, child) => ErrorBoundary(child: child!),  // ✅ Error handling
+=======
+      home: const HomeScreen(),
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        pageTransitionsTheme: const PageTransitionsTheme(
+          builders: {
+            TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
+            TargetPlatform.iOS: FadeUpwardsPageTransitionsBuilder(),
+          },
+        ),
+      ),
+>>>>>>> main
     );
   }
 }
